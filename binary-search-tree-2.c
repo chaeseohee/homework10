@@ -349,41 +349,41 @@ int freeBST(Node* head)
 
 Node* pop()
 {
-	if (top < 0) return NULL;
-	return stack[top--];
+	if (top < 0) // 스택에 원소가 없는 경우
+		return NULL; // NULL을 리턴
+	return stack[top--]; // 이 외 경우 stack[top]을 리턴하고 top--
 }
 
 void push(Node* aNode)
 {
-	stack[++top] = aNode;
+	stack[++top] = aNode; // top+1번째 stack원소에 새로운 노드 삽입
 }
 
 void printStack()
 {
-	int i = 0;
 	printf("--- stack ---\n");
-	while(i <= top)
-	{
-		printf("stack[%d] = %d\n", i, stack[i]->key);
-	}
+	for(int i = 0; i <= top; i++) //for문을 통해 stack의 원소 출력 
+		printf("stack[%d] = %d\n", i, stack[i]->key);		
 }
 
 
-Node* deQueue()
+Node* deQueue() // circler queue
 {
-	if (front == rear) {
-	// printf("\n....Now Queue is empty!!\n" );
-	return NULL;
+	if (front == rear) // 큐에 원소가 없는 경우
+	{
+	    printf("\n....Now Queue is empty!!\n" );
+		return NULL;
 	}
 
-	front = (front + 1) % MAX_QUEUE_SIZE;
+	front = (front + 1) % MAX_QUEUE_SIZE; // circler queue이기 때문에 front+1을 나머지연산
 	return queue[front];
 }
 
 void enQueue(Node* aNode)
 {
-	rear = (rear + 1) % MAX_QUEUE_SIZE;
-	if (front == rear) {
+	rear = (rear + 1) % MAX_QUEUE_SIZE; // circler queue이기 때문에 rear+1을 나머지연산
+	if (front == rear)	// 큐에 원소가 꽉 찬 경우 
+	{
 		printf("\n....Now Queue is full!!\n");
 		return;
 	}
