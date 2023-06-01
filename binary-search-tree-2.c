@@ -11,27 +11,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
-
 typedef struct node {
 	int key;
-	struct node *left;
-	struct node *right;
+	struct node* left;
+	struct node* right;
 } Node;
 
 /* for stack */
-#define MAX_STACK_SIZE		20
+#define MAX_STACK_SIZE 20
 Node* stack[MAX_STACK_SIZE];
 int top = -1;
 
-
 /* for queue */
-#define MAX_QUEUE_SIZE		20
+#define MAX_QUEUE_SIZE 20
 Node* queue[MAX_QUEUE_SIZE];
 int front = -1;
 int rear = -1;
-
-
 
 int initializeBST(Node** h);
 void recursiveInorder(Node* ptr);	  /* recursive inorder traversal */
@@ -49,10 +44,7 @@ Node* deQueue();
 void enQueue(Node* aNode);
 
 /* you may add your own defined functions if necessary */
-
-
 void printStack();
-
 
 
 int main()
@@ -61,10 +53,10 @@ int main()
 	int key;
 	Node* head = NULL;
 
-	do{
+	do {
 		printf("\n\n");
 		printf("----------------------------------------------------------------\n");
-		printf("                   Binary Search Tree #2                        \n");
+		printf("   Binary Search Tree #2 [--- [chae seohee] [2022041084] ---]   \n");
 		printf("----------------------------------------------------------------\n");
 		printf(" Initialize BST       = z                                       \n");
 		printf(" Insert Node          = i      Delete Node                  = d \n");
@@ -75,7 +67,7 @@ int main()
 		printf("Command = ");
 		scanf(" %c", &command);
 
-		switch(command) {
+		switch (command) {
 		case 'z': case 'Z':
 			initializeBST(&head);
 			break;
@@ -92,28 +84,23 @@ int main()
 			scanf("%d", &key);
 			deleteNode(head, key);
 			break;
-
 		case 'r': case 'R':
 			recursiveInorder(head->left);
 			break;
 		case 't': case 'T':
 			iterativeInorder(head->left);
 			break;
-
 		case 'l': case 'L':
 			levelOrder(head->left);
 			break;
-
 		case 'p': case 'P':
 			printStack();
 			break;
-
 		default:
 			printf("\n       >>>>>   Concentration!!   <<<<<     \n");
 			break;
 		}
-
-	}while(command != 'q' && command != 'Q');
+	} while (command != 'q' && command != 'Q');
 
 	return 1;
 }
@@ -121,7 +108,7 @@ int main()
 int initializeBST(Node** h) {
 
 	/* if the tree is not empty, then remove all allocated nodes from the tree*/
-	if(*h != NULL)
+	if (*h != NULL)
 		freeBST(*h);
 
 	/* create a head node */
@@ -141,56 +128,50 @@ int initializeBST(Node** h) {
 
 void recursiveInorder(Node* ptr)
 {
-	if(ptr) {
+	if (ptr) {
 		recursiveInorder(ptr->left);
 		printf(" [%d] ", ptr->key);
 		recursiveInorder(ptr->right);
 	}
 }
 
-/**
- * textbook: p 224
- */
 void iterativeInorder(Node* node)
 {
-	for(;;)
+	for (;;)
 	{
-		for(; node; node = node->left)
+		for (; node; node = node->left)
 			push(node);
 		node = pop();
 
-		if(!node) break;
+		if (!node) break;
 		printf(" [%d] ", node->key);
 
 		node = node->right;
 	}
 }
 
-
 void levelOrder(Node* ptr)
 {
-	// int front = rear = -1;
+	int front = rear = -1;
 
-	if(!ptr) return; /* empty tree */
+	if (!ptr) return; /* empty tree */
 
 	enQueue(ptr);
 
-	for(;;)
+	for (;;)
 	{
 		ptr = deQueue();
-		if(ptr) {
+		if (ptr) {
 			printf(" [%d] ", ptr->key);
 
-			if(ptr->left)
+			if (ptr->left)
 				enQueue(ptr->left);
-			if(ptr->right)
+			if (ptr->right)
 				enQueue(ptr->right);
 		}
 		else
 			break;
-
 	}
-
 }
 
 
@@ -210,10 +191,10 @@ int insert(Node* head, int key)
 	Node* ptr = head->left;
 
 	Node* parentNode = NULL;
-	while(ptr != NULL) {
+	while (ptr != NULL) {
 
 		/* if there is a node for the key, then just return */
-		if(ptr->key == key) return 1;
+		if (ptr->key == key) return 1;
 
 		/* we have to move onto children nodes,
 		 * keep tracking the parent using parentNode */
@@ -223,14 +204,14 @@ int insert(Node* head, int key)
 		 * then the new node has to be inserted into the right subtree;
 		 * otherwise the left subtree.
 		 */
-		if(ptr->key < key)
+		if (ptr->key < key)
 			ptr = ptr->right;
 		else
 			ptr = ptr->left;
 	}
 
 	/* linking the new node to the parent */
-	if(parentNode->key > key)
+	if (parentNode->key > key)
 		parentNode->left = newNode;
 	else
 		parentNode->right = newNode;
@@ -291,9 +272,9 @@ int deleteNode(Node* head, int key)
 			head->left = child;
 		else
 		{
-			if(parent->left = p) // 삭제할 노드가 부모노드의 왼쪽노드인 경우
+			if(parent->left == p) // 삭제할 노드가 부모노드의 왼쪽노드인 경우
 				parent->left = child;
-			else if(parent->right = p) // 삭제할 노드가 부모노드의 오른쪽노드인 경우
+			else if(parent->right == p) // 삭제할 노드가 부모노드의 오른쪽노드인 경우
 				parent->right = child;
 		}
 		free(p);
@@ -313,7 +294,7 @@ int deleteNode(Node* head, int key)
 			succ_parent->left = succ->right;
 		else
 			succ_parent->right = succ->right;
-		
+
 		free(succ);
 	}
 }
@@ -321,7 +302,7 @@ int deleteNode(Node* head, int key)
 
 void freeNode(Node* ptr)
 {
-	if(ptr) {
+	if (ptr) {
 		freeNode(ptr->left);
 		freeNode(ptr->right);
 		free(ptr);
@@ -331,7 +312,7 @@ void freeNode(Node* ptr)
 int freeBST(Node* head)
 {
 
-	if(head->left == head)
+	if (head->left == head)
 	{
 		free(head);
 		return 1;
@@ -344,8 +325,6 @@ int freeBST(Node* head)
 	free(head);
 	return 1;
 }
-
-
 
 Node* pop()
 {
@@ -362,18 +341,15 @@ void push(Node* aNode)
 void printStack()
 {
 	printf("--- stack ---\n");
-	for(int i = 0; i <= top; i++) //for문을 통해 stack의 원소 출력 
-		printf("stack[%d] = %d\n", i, stack[i]->key);		
+	for (int i = 0; i <= top; i++) //for문을 통해 stack의 원소 출력 
+		printf("stack[%d] = %d\n", i, stack[i]->key);
 }
 
 
 Node* deQueue() // circler queue
 {
 	if (front == rear) // 큐에 원소가 없는 경우
-	{
-	    printf("\n....Now Queue is empty!!\n" );
 		return NULL;
-	}
 
 	front = (front + 1) % MAX_QUEUE_SIZE; // circler queue이기 때문에 front+1을 나머지연산
 	return queue[front];
@@ -390,8 +366,4 @@ void enQueue(Node* aNode)
 
 	queue[rear] = aNode;
 }
-
-
-
-
 
